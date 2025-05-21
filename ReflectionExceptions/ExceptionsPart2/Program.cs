@@ -1,10 +1,15 @@
 ﻿var connection = new DatabaseConnection();
 
 var userService = new UserService(connection);
+try
+{
 
-var user = userService.GetUser(1);
+    var user = userService.GetUser(-1);
 
-Console.WriteLine(user);
+    Console.WriteLine(user);
+}
+catch (Exception ex) { }
+Console.WriteLine(connection.ConnectionOpen);
 
 public class DatabaseConnection
 {
@@ -34,11 +39,23 @@ public class UserService
 
     public string GetUser(int userId)
     {
+        string user = null;
         _connection.Open();
-
-        var user = _connection.QueryUserById(userId);
-
-        _connection.Close();
+        try
+        {
+            user = _connection.QueryUserById(userId); 
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Exeption occured while reading the database");
+            Console.WriteLine(ex.Message);
+            _connection.Close();
+            throw;
+        }
+        finally
+        {
+            _connection.Close();
+        }
 
         return user;
     }

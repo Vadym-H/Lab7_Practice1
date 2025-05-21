@@ -1,5 +1,6 @@
 ﻿using ReflectionTutorial;
 using System.Reflection;
+using static ReflectionTutorial.Car;
 
 //LecturePart();
 //Task1();
@@ -111,4 +112,34 @@ static void Task4()
 
     Console.WriteLine($"{car.Brand} {car.Model} drove {car.Odometer} " +
         $"kilometers and remaining fuel is {car.FuelLevel}");
+}
+
+var car = new Car("Toyota", "Corolla", 50, 6.0);
+Console.WriteLine($"Cars made so far {Car.CarsMade}");
+try
+{
+    car.AddFuel(10);
+    car.AddFuel(40);
+}
+catch(ArgumentOutOfRangeException ex)
+{
+    Console.WriteLine(ex.Message);
+}
+catch(FuelOverflowExcepion  ex)
+{
+    Console.WriteLine(ex.Message);
+}
+
+try
+{
+    car.Drive(10);
+    car.Drive(50);
+}
+catch(FuelIsNotEnoughToDriveException ex)
+{
+    Console.WriteLine(ex.Message);
+}
+catch(ArgumentOutOfRangeException ex)
+{
+    Console.WriteLine(ex.Message);
 }
